@@ -1,0 +1,5 @@
+open_url http://localhost:9001 : Test pass
+Scenario ts2 datagroup dg1 go_to_listing: Test fail  
+Scenario ts2 datagroup dg1 go_to_listing: Test pass  
+go_to_listing: city filter missing in datagroup dg2
+Scenario ts3 datagroup dg2 go_to_listing: Test fail  
