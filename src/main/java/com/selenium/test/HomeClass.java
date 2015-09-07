@@ -15,6 +15,9 @@ import org.openqa.selenium.WebDriver;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HomeClass {
 
@@ -45,16 +48,25 @@ public class HomeClass {
 
             Row row = test_conf_rowIterator.next();
 
-            String test_sheet = row.getCell(0).getStringCellValue();
-            String data_sheet = row.getCell(1).getStringCellValue();
-            String url = row.getCell(2).getStringCellValue();
+            ArrayList<Runnable> class_list = new ArrayList<Runnable>();
+            for(int a = 0;test_conf_rowIterator.hasNext();a++){
+                    class_list.add(new MultipleThread(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(), row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue()));
+            }
 
-            ConfigDataTest data_test = new ConfigDataTest();
+            ExecutorService executor = Executors.newFixedThreadPool(class_list.size());
+            for(int list=0;list<class_list.size();list++){
+                executor.execute(class_list.get(list));
+            }
 
-            ArrayList<JSONObject> test_object = data_test.setTest(test_sheet);
-            JSONObject data_object = data_test.setData(data_sheet);
+            executor.shutdown();
+            // Wait until all threads are finish
+            while (!executor.isTerminated()) {
 
-            data_test.RunTest(test_object, data_object, url);
+            }
+//            ArrayList<JSONObject> test_object = data_test.setTest(test_sheet);
+//            JSONObject data_object = data_test.setData(data_sheet);
+//
+//            data_test.RunTest(test_object, data_object, url, name);
 
         } catch (FileNotFoundException e) {
             System.out.println("Test config file not found");

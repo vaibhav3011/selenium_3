@@ -29,12 +29,12 @@ public class go_to_listing {
             JSONObject input_value = new JSONObject(input);
 
             if(!input_value.has("model") || input_value.get("model").equals(" ")){
-                writer.append(current_class + ": model filter missing in datagroup " + data.get("datagroup") + "\n");
+                writer.append("Scenario " + scenario +" datagroup " + data.get("datagroup") + " : model filter missing in datagroup " + data.get("datagroup") + "\n");
                 driver.close();
                 return false;
             }
             else if(!input_value.has("budget") || input_value.get("budget").equals(" ")){
-                writer.append(current_class + ": budget filter missing in datagroup " + data.get("datagroup") + "\n");
+                writer.append("Scenario " + scenario +" datagroup " + data.get("datagroup") + " : budget filter missing in datagroup " + data.get("datagroup") + "\n");
                 driver.close();
                 return false;
             }

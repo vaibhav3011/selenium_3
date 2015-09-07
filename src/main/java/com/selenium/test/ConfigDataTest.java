@@ -21,6 +21,17 @@ import java.util.Iterator;
  */
 public class ConfigDataTest {
 
+    ArrayList<JSONObject> test_object = new ArrayList<JSONObject>();
+
+    JSONObject data_object = new JSONObject();
+
+//    public ConfigDataTest(String test,String data, String url, String name){
+//        this.test_object = this.setTest(test);
+//        this.data_object = this.setData(data);
+//
+//        this.RunTest(this.test_object, this.data_object, url, name);
+//    }
+
     public JSONObject setData(String sheet){
 
         JSONObject data_sheet = new JSONObject();
@@ -123,11 +134,11 @@ public class ConfigDataTest {
         return test_sheet_data;
     }
 
-    public void RunTest(ArrayList<JSONObject> test, JSONObject data, String url) {
+    public void RunTest(ArrayList<JSONObject> test, JSONObject data, String url, String name) {
         File chromedriver = new File("drivers/chromedriver");
         System.setProperty("webdriver.chrome.driver", chromedriver.getAbsolutePath());
 
-        File file = new File("test_output.txt");
+        File file = new File("/home/vaibhav/Desktop/"+name+"_output.txt");
         FileWriter fw = null;
 
 
@@ -168,6 +179,7 @@ public class ConfigDataTest {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                bw.append("\n");
             }
             bw.close();
         } catch (IOException e) {
