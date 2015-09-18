@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.opera.OperaDriver;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -57,7 +58,6 @@ public class ConfigDataTest {
                 row = test_rowIterator.next();
                 if(row.getCell(0)!=null && row.getCell(0).toString().equals("##")){
                     data_sheet.put(current_datagroup, temp_array);
-                    temp_array = new ArrayList<JSONObject>();
                     break;
                 }
                 else if((row.getCell(0)!=null && row.getCell(0).toString().equals("#"))){
@@ -92,8 +92,9 @@ public class ConfigDataTest {
         return data_sheet;
     };
 
-    public ArrayList<JSONObject> setTest(String sheet){
+    public ArrayList<ArrayList<JSONObject>> setTest(String sheet){
 
+        ArrayList<ArrayList<JSONObject>> returnTest = new ArrayList<ArrayList<JSONObject>>();
         ArrayList<String> testTitle = new ArrayList<String>();
         ArrayList<JSONObject> test_sheet_data = new ArrayList<JSONObject>();
 
@@ -114,14 +115,27 @@ public class ConfigDataTest {
                 row = test_rowIterator.next();
                 JSONObject temp = new JSONObject();
 
-                for (int cell_index = 0; cell_index <row.getLastCellNum();cell_index++) {
-
-                    if(row.getCell(cell_index) != null) {
-                        temp.put(testTitle.get(cell_index), row.getCell(cell_index).toString());
-
-                    }
+                if(row.getCell(0)!=null && row.getCell(0).toString().equals("##")){
+                    if(test_sheet_data.size()>0)
+                        returnTest.add(test_sheet_data);
+                    break;
                 }
-                test_sheet_data.add(temp);
+                else if(row.getCell(0)!=null && row.getCell(0).toString().equals("#")){
+                    if(test_sheet_data.size()>0)
+                        returnTest.add(test_sheet_data);
+                    test_sheet_data = new ArrayList<JSONObject>();
+                    continue;
+                }
+                else{
+                    for (int cell_index = 0; cell_index <row.getLastCellNum();cell_index++) {
+
+                        if(row.getCell(cell_index) != null) {
+                            temp.put(testTitle.get(cell_index), row.getCell(cell_index).toString());
+
+                        }
+                    }
+                    test_sheet_data.add(temp);
+                }
             }
 
         } catch (FileNotFoundException e) {
@@ -131,17 +145,14 @@ public class ConfigDataTest {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return test_sheet_data;
+        return returnTest;
     }
 
-    public void RunTest(ArrayList<JSONObject> test, JSONObject data, String url, String name) {
-        File chromedriver = new File("drivers/chromedriver");
-        System.setProperty("webdriver.chrome.driver", chromedriver.getAbsolutePath());
+    public void RunTest(ArrayList<ArrayList<JSONObject>> test, JSONObject data, String url, String name, String browser) {
 
+        //Create out file for logging
         File file = new File("/home/vaibhav/Desktop/"+name+"_output.txt");
         FileWriter fw = null;
-
-
         // if file doesnt exists, then create it
         if (!file.exists()) {
             try {
@@ -150,38 +161,17 @@ public class ConfigDataTest {
                 e.printStackTrace();
             }
         }
-        else{
 
-        }
         try {
             fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
 
             for (int i = 0; i < test.size(); i++) {
-                JSONObject temp_test = test.get(i);
-                try {
-                    if (temp_test.has("datagroup") && !temp_test.get("datagroup").equals(" ")) {
 
-                        String datagroup = temp_test.get("datagroup").toString();
-                        if (data.has(datagroup) && ((JSONArray) data.get(datagroup)).length() > 0) {
-                            JSONArray data_object = (JSONArray) data.get(datagroup);
-
-                            for (int k = 0; k < data_object.length(); k++) {
-                                openGet(temp_test, new ChromeDriver(), url, data_object.getJSONObject(k), bw);
-                            }
-                        } else {
-                            openGet(temp_test, new ChromeDriver(), url, null, bw);
-                        }
-
-                    } else {
-                        openGet(temp_test, new ChromeDriver(), url, null, bw);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                bw.append("\n");
+                TestScenario(test.get(i), data, url, name, bw);
             }
             bw.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -213,6 +203,38 @@ public class ConfigDataTest {
             e.printStackTrace();
         } catch (InstantiationException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public static void TestScenario(ArrayList<JSONObject> test, JSONObject data, String url, String name, BufferedWriter bw){
+        WebDriver driver = new OperaDriver();
+        for(int k=0;k < test.size();k++){
+
+            JSONObject temp_test = test.get(k);
+            try {
+                if (temp_test.has("datagroup") && !temp_test.get("datagroup").equals(" ")) {
+
+                    String datagroup = temp_test.get("datagroup").toString();
+                    if (data.has(datagroup) && ((JSONArray) data.get(datagroup)).length() > 0) {
+                        JSONArray data_object = (JSONArray) data.get(datagroup);
+
+                        for (int l = 0; l < data_object.length(); l++) {
+                            openGet(temp_test, new ChromeDriver(), url, data_object.getJSONObject(l), bw);
+                        }
+                    } else {
+                        openGet(temp_test, new ChromeDriver(), url, null, bw);
+                    }
+
+                } else {
+                    openGet(temp_test, new ChromeDriver(), url, null, bw);
+                }
+                bw.append("\n");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

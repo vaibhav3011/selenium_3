@@ -26,6 +26,10 @@ public class HomeClass {
     public static Iterator<Row> test_sheet_rowIterator;
     public static void main(String[] args)
     {
+        //Set all browsers pre requirements
+        File chromedriver = new File("drivers/chromedriver");
+        System.setProperty("webdriver.chrome.driver", chromedriver.getAbsolutePath());
+
         try
         {
             BufferedReader br = new BufferedReader(new FileReader("config.txt"));
@@ -36,6 +40,8 @@ public class HomeClass {
                 }
             }
 
+            System.out.println(test_config);
+
             //Open and read test config file
             //Get path for test_sheet, data_sheet and url to test
 
@@ -44,13 +50,12 @@ public class HomeClass {
             XSSFSheet test_conf_sheet = test_conf_workbook.getSheetAt(0);
             Iterator<Row> test_conf_rowIterator = test_conf_sheet.iterator();
 
-            test_conf_rowIterator.next();
-
             Row row = test_conf_rowIterator.next();
 
             ArrayList<Runnable> class_list = new ArrayList<Runnable>();
-            for(int a = 0;test_conf_rowIterator.hasNext();a++){
-                    class_list.add(new MultipleThread(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(), row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue()));
+            for(int a = 0;a<test_conf_sheet.getLastRowNum();a++) {
+                row = test_conf_rowIterator.next();
+                class_list.add(new MultipleThread(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(), row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue(), row.getCell(4).getStringCellValue()));
             }
 
             ExecutorService executor = Executors.newFixedThreadPool(class_list.size());
@@ -63,10 +68,6 @@ public class HomeClass {
             while (!executor.isTerminated()) {
 
             }
-//            ArrayList<JSONObject> test_object = data_test.setTest(test_sheet);
-//            JSONObject data_object = data_test.setData(data_sheet);
-//
-//            data_test.RunTest(test_object, data_object, url, name);
 
         } catch (FileNotFoundException e) {
             System.out.println("Test config file not found");
