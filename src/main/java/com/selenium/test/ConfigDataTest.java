@@ -180,6 +180,7 @@ public class ConfigDataTest {
     public static void openGet(JSONObject temp_test, WebDriver driver, String url, JSONObject data, BufferedWriter writer){
 
         try {
+
             if(temp_test.has("package") && temp_test.has("operation_class") && !temp_test.get("package").equals(" ") && !temp_test.get("operation_class").equals(" ")) {
 
                 Class cls1 = Class.forName(temp_test.get("package") + "." + temp_test.get("operation_class"));
@@ -208,26 +209,34 @@ public class ConfigDataTest {
 
 
     public static void TestScenario(ArrayList<JSONObject> test, JSONObject data, String url, String name, BufferedWriter bw){
-        WebDriver driver = new OperaDriver();
+        System.out.println(test);
+        System.out.println(data);
+
         for(int k=0;k < test.size();k++){
 
             JSONObject temp_test = test.get(k);
             try {
+                //If has datagroup which is not empty
                 if (temp_test.has("datagroup") && !temp_test.get("datagroup").equals(" ")) {
 
                     String datagroup = temp_test.get("datagroup").toString();
+                    //If has datagroup and it is available
                     if (data.has(datagroup) && ((JSONArray) data.get(datagroup)).length() > 0) {
                         JSONArray data_object = (JSONArray) data.get(datagroup);
 
                         for (int l = 0; l < data_object.length(); l++) {
-                            openGet(temp_test, new ChromeDriver(), url, data_object.getJSONObject(l), bw);
+                            System.out.println("here 1");
+//                            openGet(temp_test, new ChromeDriver(), url, data_object.getJSONObject(l), bw);
                         }
+                        //else datagroup is not available in data sheet
                     } else {
-                        openGet(temp_test, new ChromeDriver(), url, null, bw);
+                        System.out.println("here 2");
+//                        openGet(temp_test, new ChromeDriver(), url, null, bw);
                     }
 
                 } else {
-                    openGet(temp_test, new ChromeDriver(), url, null, bw);
+                    System.out.println("here 3");
+//                    openGet(temp_test, new ChromeDriver(), url, null, bw);
                 }
                 bw.append("\n");
             } catch (JSONException e) {

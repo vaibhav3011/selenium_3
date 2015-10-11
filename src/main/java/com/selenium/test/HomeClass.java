@@ -40,8 +40,6 @@ public class HomeClass {
                 }
             }
 
-            System.out.println(test_config);
-
             //Open and read test config file
             //Get path for test_sheet, data_sheet and url to test
 
@@ -57,7 +55,6 @@ public class HomeClass {
                 row = test_conf_rowIterator.next();
                 class_list.add(new MultipleThread(row.getCell(0).getStringCellValue(), row.getCell(1).getStringCellValue(), row.getCell(2).getStringCellValue(), row.getCell(3).getStringCellValue(), row.getCell(4).getStringCellValue()));
             }
-
             ExecutorService executor = Executors.newFixedThreadPool(class_list.size());
             for(int list=0;list<class_list.size();list++){
                 executor.execute(class_list.get(list));
