@@ -1,19 +1,20 @@
-//package com.selenium.test;
-//
-//import org.json.JSONObject;
-//import org.openqa.selenium.chrome.ChromeDriver;
-//
-//import java.io.BufferedWriter;
-//import java.io.IOException;
-//import java.io.PrintWriter;
-//
-///**
-// * Created by vaibhav on 2/9/15.
-// */
-//public class open_url {
-//
-//
-//    public void get(String scenario, String url, ChromeDriver driver, String expected_output, JSONObject data, BufferedWriter writer) {
+package com.selenium.test;
+
+import org.json.JSONObject;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+/**
+ * Created by vaibhav on 2/9/15.
+ */
+public class open_url {
+
+
+    public void get(String scenario, String url, String expected_output, JSONObject data, BufferedWriter writer) {
+        ChromeDriver driver = new ChromeDriver();
 //        driver.get(url);
 //        String output = expected_output.split("=")[1];
 //        String title = driver.getTitle();
@@ -32,6 +33,7 @@
 //                e.printStackTrace();
 //            }
 //        }
-//        driver.close();
-//    };
-//}
+        System.out.println("open_url" + "  " +scenario + "  " + url + "  ");
+        driver.close();
+    };
+}

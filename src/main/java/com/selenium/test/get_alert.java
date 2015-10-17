@@ -1,20 +1,21 @@
-//package com.selenium.test;
-//
-//import org.json.JSONObject;
-//import org.openqa.selenium.By;
-//import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.chrome.ChromeDriver;
-//
-//import java.io.BufferedWriter;
-//import java.io.IOException;
-//
-///**
-// * Created by vaibhav on 7/9/15.
-// */
-//public class get_alert {
-//
-//    public boolean get(String scenario, String url, ChromeDriver driver, String expected_output, JSONObject data, BufferedWriter writer) {
-//
+package com.selenium.test;
+
+import org.json.JSONObject;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+
+/**
+ * Created by vaibhav on 7/9/15.
+ */
+public class get_alert {
+
+    public boolean get(String scenario, String url, String expected_output, JSONObject data, BufferedWriter writer) {
+
+        ChromeDriver driver = new ChromeDriver();
 //        String output = expected_output.split("=")[1];
 //        driver.get(url + "/bangalore");
 //
@@ -55,6 +56,8 @@
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-//        return true;
-//    }
-//}
+        System.out.println(scenario + "  " + url + "  ");
+        driver.close();
+        return true;
+    }
+}

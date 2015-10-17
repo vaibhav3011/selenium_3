@@ -1,16 +1,17 @@
-//package com.selenium.test;
-//
-//import org.json.JSONObject;
-//import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.chrome.ChromeDriver;
-//
-///**
-// * Created by vaibhav on 5/9/15.
-// */
-//public class login_popup {
-//
-//    public void get(String scenario, String url, ChromeDriver driver, String expected_output, JSONObject data) {
-//
+package com.selenium.test;
+
+import org.json.JSONObject;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+/**
+ * Created by vaibhav on 5/9/15.
+ */
+public class login_popup {
+
+    public void get(String scenario, String url, String expected_output, JSONObject data) {
+        ChromeDriver driver = new ChromeDriver();
+
 //        String current_class = this.getClass().getSimpleName();
 //        String output = expected_output.split("=")[1];
 //
@@ -32,6 +33,7 @@
 //        }
 //
 //        String login_text = driver.getTitle();
-//        driver.close();
-//    }
-//}
+        System.out.println("login_popup" + "  " +scenario + "  " + url + "  ");
+        driver.close();
+    }
+}

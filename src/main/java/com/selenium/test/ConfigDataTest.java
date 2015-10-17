@@ -167,7 +167,6 @@ public class ConfigDataTest {
             BufferedWriter bw = new BufferedWriter(fw);
 
             for (int i = 0; i < test.size(); i++) {
-
                 TestScenario(test.get(i), data, url, name, bw);
             }
             bw.close();
@@ -177,7 +176,7 @@ public class ConfigDataTest {
         }
     };
 
-    public static void openGet(JSONObject temp_test, WebDriver driver, String url, JSONObject data, BufferedWriter writer){
+    public static void openGet(JSONObject temp_test, String url, JSONObject data, BufferedWriter writer){
 
         try {
 
@@ -185,8 +184,8 @@ public class ConfigDataTest {
 
                 Class cls1 = Class.forName(temp_test.get("package") + "." + temp_test.get("operation_class"));
                 Object obj1 = cls1.newInstance();
-                Method method = cls1.getDeclaredMethod("get", String.class, String.class, ChromeDriver.class, String.class, JSONObject.class, BufferedWriter.class);
-                method.invoke(obj1, temp_test.get("id"), url, driver, temp_test.get("expected_output"), data, writer);
+                Method method = cls1.getDeclaredMethod("get", String.class, String.class, String.class, JSONObject.class, BufferedWriter.class);
+                method.invoke(obj1, temp_test.get("id"), url, temp_test.get("expected_output"), data, writer);
 
             }
             else{
@@ -209,8 +208,6 @@ public class ConfigDataTest {
 
 
     public static void TestScenario(ArrayList<JSONObject> test, JSONObject data, String url, String name, BufferedWriter bw){
-        System.out.println(test);
-        System.out.println(data);
 
         for(int k=0;k < test.size();k++){
 
@@ -218,25 +215,21 @@ public class ConfigDataTest {
             try {
                 //If has datagroup which is not empty
                 if (temp_test.has("datagroup") && !temp_test.get("datagroup").equals(" ")) {
-
                     String datagroup = temp_test.get("datagroup").toString();
                     //If has datagroup and it is available
                     if (data.has(datagroup) && ((JSONArray) data.get(datagroup)).length() > 0) {
                         JSONArray data_object = (JSONArray) data.get(datagroup);
 
                         for (int l = 0; l < data_object.length(); l++) {
-                            System.out.println("here 1");
-//                            openGet(temp_test, new ChromeDriver(), url, data_object.getJSONObject(l), bw);
+                            openGet(temp_test, url, data_object.getJSONObject(l), bw);
                         }
                         //else datagroup is not available in data sheet
                     } else {
-                        System.out.println("here 2");
-//                        openGet(temp_test, new ChromeDriver(), url, null, bw);
+                        openGet(temp_test, url, null, bw);
                     }
 
                 } else {
-                    System.out.println("here 3");
-//                    openGet(temp_test, new ChromeDriver(), url, null, bw);
+                    openGet(temp_test, url, null, bw);
                 }
                 bw.append("\n");
             } catch (JSONException e) {

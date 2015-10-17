@@ -1,26 +1,26 @@
-//package com.selenium.test;
-//
-//import org.json.JSONException;
-//import org.json.JSONObject;
-//import org.openqa.selenium.By;
-//import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.chrome.ChromeDriver;
-//import org.openqa.selenium.support.ui.ExpectedConditions;
-//import org.openqa.selenium.support.ui.WebDriverWait;
-//
-//import java.io.BufferedWriter;
-//import java.io.IOException;
-//import java.io.PrintWriter;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-///**
-// * Created by vaibhav on 4/9/15.
-// */
-//public class go_to_listing {
-//
-//    public boolean get(String scenario, String url, ChromeDriver driver, String expected_output, JSONObject data, BufferedWriter writer) {
-//
+package com.selenium.test;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by vaibhav on 4/9/15.
+ */
+public class go_to_listing {
+
+    public boolean get(String scenario, String url, String expected_output, JSONObject data, BufferedWriter writer) {
+        ChromeDriver driver = new ChromeDriver();
 //        String current_class = this.getClass().getSimpleName();
 //        String output = expected_output.split("=")[1];
 //
@@ -153,6 +153,8 @@
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-//        return true;
-//    }
-//}
+        System.out.println("go_to_listing" + "  " +scenario + "  " + url + "  ");
+        driver.close();
+        return true;
+    }
+}
